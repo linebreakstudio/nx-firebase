@@ -49,7 +49,7 @@ export default async function runExecutor(options: FirebaseBuildExecutorSchema, 
   debugLog('options=', options)
   
   // get the project graph; returns an object containing all nodes in the workspace, files, and dependencies
-  const projGraph = createProjectGraph();
+  const projGraph = await createProjectGraphAsync();
   // nx firebase functions are essentially @nrwl/node:package libraries, but are added to the project
   // as applications as they are fundamentally the deployable "application" output of a build pipeline.
   // Due to this, we can import standard node libraries as dependencies from within the workspace
@@ -235,9 +235,9 @@ export default async function runExecutor(options: FirebaseBuildExecutorSchema, 
 
   // Non-buildable library dependencies are a show stopper
   // If any bad dependencies were found, report and throw
-  for (const dep of nonBuildableDeps) {
-      logger.error("ERROR: Found non-buildable library dependency '" + dep.name + "' in Firebase Application. Imported libraries must be created with `--buildable`.")
-  }
+  // for (const dep of nonBuildableDeps) {
+  //     logger.error("ERROR: Found non-buildable library dependency '" + dep.name + "' in Firebase Application. Imported libraries must be created with `--buildable`.")
+  // }
   for (const dep of incompatibleNestedDeps) {
       logger.error("ERROR: Found incompatible nested library dependency '" + dep + "' in Firebase Application. Imported nested libraries must be created with `--importPath`.")
   }
